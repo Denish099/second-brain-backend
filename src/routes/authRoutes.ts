@@ -1,13 +1,9 @@
-import { Router, Request, Response } from "express";
-import { Jwt } from "jsonwebtoken";
-const router: Router = Router();
+import { Router } from "express";
+import { login, signup } from "../controllers/authController";
 
-router.post("/login", (req: Request, res: Response) => {
-  res.json({ message: "Login route" });
-});
+const router = Router();
 
-router.post("/signup", (req: Request, res: Response) => {
-  res.json({ message: "signup route" });
-});
+router.post("/login", login); // login route -> login controller
+router.post("/signup", signup); // signup route -> signup controller
 
 export default router;
