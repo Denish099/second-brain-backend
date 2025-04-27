@@ -17,7 +17,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/content", contentRoutes);
 app.use("/api/v1", shareRoutes);
 
-app.listen(PORT, async () => {
-  await connectDb();
+app.listen(PORT, () => {
+  connectDb();
   console.log(`Listening on port ${PORT}`);
 });

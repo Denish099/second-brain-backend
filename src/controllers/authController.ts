@@ -59,7 +59,7 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
     });
   }
 };
-// Login route
+
 export const login = async (req: Request, res: Response): Promise<any> => {
   try {
     const { username, password } = req.body;
