@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { authenticateToken } from "../middleware/authMiddleware";
-import { addContent } from "../controllers/contentController";
+import { addContent, getContent } from "../controllers/contentController";
 const router = Router();
 
 router.post("/", authenticateToken, addContent);
-router.get("/", () => {});
+router.get("/", authenticateToken, getContent);
 router.delete("/", () => {});
 export default router;

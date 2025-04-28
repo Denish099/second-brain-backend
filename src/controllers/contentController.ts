@@ -30,3 +30,30 @@ export const addContent = async (
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getContent = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = req.user?.id; // because req.user is just a string (user id)
+
+    if (!userId) {
+      res.status(401).json({ message: "Unauthorized: No user found" });
+      return;
+    }
+
+    const contents = await Content.find({ userId }).populate(
+      "userId",
+      "username"
+    );
+
+    res.status(200).json({
+      message: "Content fetched successfully",
+      contents,
+    });
+  } catch (error) {
+    console.error("Error fetching content:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
