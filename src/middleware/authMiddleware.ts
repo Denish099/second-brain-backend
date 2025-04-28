@@ -10,7 +10,7 @@ interface JwtPayload {
 
 declare module "express" {
   interface Request {
-    user?: string;
+    user?: JwtPayload;
   }
 }
 
@@ -29,7 +29,7 @@ export const authenticateToken = (
 
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
 
-    req.user = decoded.id;
+    req.user = decoded;
 
     next();
   } catch (error) {
