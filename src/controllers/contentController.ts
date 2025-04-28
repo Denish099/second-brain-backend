@@ -36,8 +36,7 @@ export const getContent = async (
   res: Response
 ): Promise<void> => {
   try {
-    const userId = req.user?.id; // because req.user is just a string (user id)
-
+    const userId = req.user?.id;
     if (!userId) {
       res.status(401).json({ message: "Unauthorized: No user found" });
       return;
@@ -54,6 +53,35 @@ export const getContent = async (
     });
   } catch (error) {
     console.error("Error fetching content:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteContent = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = req.user?.id; // req.user is string (userId)
+
+    if (!userId) {
+      res.status(401).json({ message: "Unauthorized: No user found" });
+      return;
+    }
+
+    const contentId = req.body.contentId;
+    const content = await Content.findOneAndDelete({ _id: contentId, userId });
+
+    if (!content) {
+      res.status(404).json({
+        message: "Content not found or you are not authorized to delete it",
+      });
+      return;
+    }
+
+    res.status(200).json({ message: "Content deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting content:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
