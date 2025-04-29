@@ -70,6 +70,7 @@ export const deleteContent = async (
     }
 
     const contentId = req.body.contentId;
+
     const content = await Content.findOneAndDelete({ _id: contentId, userId });
 
     if (!content) {
