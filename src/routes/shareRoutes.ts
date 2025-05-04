@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { shareLink } from "../controllers/shareController";
+import { generateLink, shareLink } from "../controllers/shareController";
 import { authenticateToken } from "../middleware/authMiddleware";
 
 const router = Router();
 
-router.post("/share", authenticateToken, shareLink);
-router.get("/:shareLink", () => {});
+router.post("/share", authenticateToken, generateLink);
+router.get("/:shareLink", shareLink);
 
 export default router;
