@@ -1,31 +1,38 @@
+import { User } from "../models/user.model";
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import { Link } from "../models/link.model";
 import { random } from "../utils/utils";
 import { Content } from "../models/content.model";
-import { User } from "../models/user.model";
-import mongoose from "mongoose";
-
 export const generateLink = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   try {
     const { share } = req.body;
+    const userId = req.user?.id;
+
+    const existingLink = await Link.findOne({ userId });
 
     if (share) {
-      await Link.create({
-        userId: req.user?.id,
-        hash: random(10),
-      });
-    } else {
-      await Link.deleteOne({
-        userId: req.user?.id,
-      });
-    }
+      if (existingLink) {
+        return res.json({ message: "/share/" + existingLink.hash });
+      }
 
-    return res.json({ message: "Updated shared link" });
+      const hash = random(10);
+      await Link.create({ userId, hash });
+
+      return res.json({ message: "/share/" + hash });
+    } else {
+      if (!existingLink) {
+        return res.status(404).json({ message: "No link to delete." });
+      }
+
+      await Link.deleteOne({ userId });
+      return res.json({ message: "Removed shareable link successfully" });
+    }
   } catch (error) {
-    console.error("Error sharing link:", error);
+    console.error("Error generating link:", error);
     return res.status(500).json({ message: "Server error" });
   }
 };
