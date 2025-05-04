@@ -5,6 +5,6 @@ import { authenticateToken } from "../middleware/authMiddleware";
 const router = Router();
 
 router.post("/share", authenticateToken, generateLink);
-router.get("/:shareLink", shareLink);
+router.get("/share/:shareLink", shareLink);
 
 export default router;
