@@ -101,3 +101,11 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     });
   }
 };
+export const getCurrentUser = (req: Request, res: Response) => {
+  try {
+    res.json(req.user);
+  } catch (error) {
+    console.log("error in getUserController");
+    res.status(400).json({ message: "server error" });
+  }
+};
