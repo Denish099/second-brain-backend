@@ -3,7 +3,7 @@ import { Content } from "../models/content.model";
 
 export const addContent = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { link, title } = req.body;
+    const { link, title, type } = req.body;
 
     if (!req.user) {
       res.status(401).json({ message: "Unauthorized: No user found" });
@@ -13,7 +13,9 @@ export const addContent = async (req: Request, res: Response): Promise<any> => {
     const userContent = new Content({
       link,
       title,
+      type,
       userId: req.user?.id,
+      tags: [],
     });
 
     await userContent.save();
